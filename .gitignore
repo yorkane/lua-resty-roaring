@@ -1,3 +1,6 @@
+/src/roaring
+
+
 # Compiled Lua sources
 luac.out
 
@@ -12,6 +15,7 @@ luac.out
 *.ko
 *.obj
 *.elf
+*.bak
 
 # Precompiled Headers
 *.gch
@@ -38,4 +42,3 @@ luac.out
 *.i*86
 *.x86_64
 *.hex
-
