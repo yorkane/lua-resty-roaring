@@ -29,10 +29,39 @@ luarocks install lua-resty-roaring
 
 # Usages:
 ```lua
-local bec = require('resty.xxhashencode')
-local b = bec.uint_byte(bec.max_int)
-local num = bec.byte_uint(b)
-local ulong = bec.xxhash64(teststr)
+local roar = roar64.new('sdfds') -- treat as unsign int64
+--local roar = roar64.new32() --treat as unsign int32
+say(roar:count()) -- 0
+local roar64 = require('resty.roaring')
+local roar = roar64.new()
+-- local k = roar64.new32()
+roar:bitmapOf(1, 2, 3, 4, 5, 6)
+roar:bitmapOf(-2)
+local arr, count = roar:list()
+roar:contains(6) -- true
+roar:count() -- 5
+roar:maximum() -- 6
+say(roar:addMany({11, 12, 13, 14, 16}))
+say(roar:maximum()) -- 16ULL
+local bytes = roar:tostring()
+say(#bytes) --48
+local r2 = roar64.new(bytes)
+say(r2:count()) --10
+dump(r2:list())
+--[[
+{
+	[1] = 1ULL,
+	[2] = 3ULL,
+	[3] = 4ULL,
+	[4] = 5ULL,
+	[5] = 6ULL,
+	[6] = 11ULL,
+	[7] = 12ULL,
+	[8] = 13ULL,
+	[9] = 14ULL,
+	[10] = 16ULL
+}
+--]]
 
 ```
 
