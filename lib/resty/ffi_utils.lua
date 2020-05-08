@@ -3,10 +3,6 @@ local tostring, tonumber, reverse, floor, byte, sub, char = tostring, tonumber, 
 local type = type
 local ffi = require "ffi"
 local ffi_new = ffi.new
-local ffi_string = ffi.string
-local new_tab, insert, mod = table.new, table.insert, math.fmod
-local gmatch, nmatch, nfind = ngx.re.gmatch, ngx.re.match, ngx.re.find
-
 local _M = {
 	---@class ffi_utils.number_list_type
 	number_list_type = {
@@ -18,16 +14,6 @@ local _M = {
 	}
 }
 local number_list_type = _M.number_list_type
-
-local function read_file(filename)
-	local file, err = io.open(filename, "r")
-	if not file then
-		return nil, err
-	end
-	local str, err = file:read("*a")
-	file:close()
-	return str, err
-end
 
 ---load_shared_lib load `libxxx.so`
 ---@param so_name string @ relative path to `package.cpath` or full path

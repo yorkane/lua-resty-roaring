@@ -16,16 +16,16 @@ local ffi_string = ffi.string
 local number_list_type = ffi_utils.number_list_type
 local tonumber, tostring, type = tonumber, tostring, type
 
----@type klib.ffi.base.cdef_Roaring64Map
-local libc = ffi_utils.load_shared_lib("luac.so")
+---@type resty.roaring.base
+local libc = ffi.load("librestyroaring.so")
 
-local base = require("klib.ffi.base.cdef_Roaring64Map")
+local base = require("resty.roaring.base")
 ffi.cdef([[//your definition on here
 typedef struct Roaring Roaring;
 
 ]] .. base.cdef)
 
----@class klib.ffi.Roaring64Map:klib.ffi.base.cdef_Roaring64Map
+---@class resty.roaring:resty.roaring.base
 ---@field id number @ used in Roaring64Map_pool
 ---@field cdata cdata @ internal cpp/c pointer
 ---@field is_32bit boolean @ internal cpp/c pointer
@@ -41,7 +41,7 @@ function _M.new(bytes_or_num_list, is_32bit)
 	if is_32bit then
 		return _M.new32(bytes_or_num_list)
 	end
-	---@type klib.ffi.Roaring64Map
+	---@type resty.roaring
 	local inst = {
 		libc = libc
 	}
@@ -61,9 +61,9 @@ end
 
 ---new
 ---@param bytes_or_num_list number[]|string|cdata @ number list, binary string bytes, cdata pointer are accepted
----@return klib.ffi.Roaring64Map
+---@return resty.roaring
 function _M.new32(bytes_or_num_list)
-	---@type klib.ffi.Roaring64Map
+	---@type resty.roaring
 	local inst = {
 		is_32bit = true,
 		libc = libc
@@ -83,7 +83,7 @@ function _M.new32(bytes_or_num_list)
 end
 
 ---clone
----@return klib.ffi.Roaring64Map
+---@return resty.roaring
 function _M:clone()
 	if not self.cdata then
 		return
@@ -157,14 +157,14 @@ end
 --	end
 --end
 
----add_uid
+---add_hash
 ---@param uid any @ char*
 ---@param length any @ int
-function _M:add_uid(uid)
+function _M:add_hash(uid)
 	if self.is_32bit then
-		return libc.r32_add_uid(self.cdata, uid, #uid)
+		return libc.r32_add_hash(self.cdata, uid, #uid)
 	else
-		return libc.r64_add_uid(self.cdata, uid, #uid)
+		return libc.r64_add_hash(self.cdata, uid, #uid)
 	end
 end
 
@@ -334,7 +334,7 @@ function _M:maximum()
 end
 
 ---intersect_map (and 2maps)
----@param target klib.ffi.Roaring64Map|string
+---@param target resty.roaring|string
 function _M:intersect_map(target)
 	local is_byte = type(target) == 'string'
 	if self.is_32bit then
@@ -353,7 +353,7 @@ function _M:intersect_map(target)
 end
 
 ---remove_map (and-not 2 maps)
----@param target klib.ffi.Roaring64Map|string
+---@param target resty.roaring|string
 function _M:remove_map(target)
 	local is_byte = type(target) == 'string'
 	if self.is_32bit then
@@ -372,7 +372,7 @@ function _M:remove_map(target)
 end
 
 ---add_map (or 2 maps)
----@param target klib.ffi.Roaring64Map|string
+---@param target resty.roaring|string
 function _M:add_map(target)
 	local is_byte = type(target) == 'string'
 	if self.is_32bit then

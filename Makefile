@@ -1,5 +1,5 @@
-INST_PREFIX ?= /usr
-INST_LIBDIR ?= $(INST_PREFIX)/lib/lua/5.1
+INST_PREFIX ?= /usr/local
+INST_LIBDIR ?= /usr/lib/lua/5.1 # ffi.load could not reach /usr/local/lib/lua/5.1
 INST_LUADIR ?= $(INST_PREFIX)/share/lua/5.1
 INSTALL ?= install
 UNAME ?= $(shell uname)
@@ -27,15 +27,19 @@ SRC := $(wildcard src/*.cpp)
 CRoaringVersion := 0.2.66
 
 .PHONY: default
-default: compile
+default: deps compile
 
 
 ### Downloading croaring from unity build
+### Downloading xxhash github
 .PHONY: deps
-depens:
-	rm -rf src/roaring
-	curl https://github.com/lemire/CRoaringUnityBuild/archive/v${CRoaringVersion}.tar.gz -Lk | tar -xvz -C src/
-	mv src/CRoar* src/roaring
+deps:
+	if [ -d "src/roaring" ]; then \
+        echo "roaring exists";\
+    else\
+    	curl https://github.com/lemire/CRoaringUnityBuild/archive/v${CRoaringVersion}.tar.gz -Lk | tar -xvz -C src/;\
+		mv src/CRoar* src/roaring;\
+    fi
 
 
 ### test:         Run test suite. Use test=... for specific tests
@@ -63,9 +67,15 @@ compile:
 ### install:      Install the library to runtime
 .PHONY: install
 install:
-	$(INSTALL) -d $(INST_LUADIR)/resty/
+	$(INSTALL) -d $(INST_LUADIR)/resty/roaring
 	$(INSTALL) lib/resty/*.lua $(INST_LUADIR)/resty/
+	$(INSTALL) lib/resty/roaring/*.lua $(INST_LUADIR)/resty/roaring
 	$(INSTALL) $(C_SO_NAME) $(INST_LIBDIR)/
+
+.PHONY: uninstall
+uninstall:
+	rm -rf $(INST_LUADIR)/resty/roaring
+	rm -f $(INST_LIBDIR)/$(C_SO_NAME)
 
 ### lint:         Lint Lua source code
 .PHONY: lint
