@@ -1,5 +1,7 @@
 /src/roaring
 /.idea/*
+.idea/
+.idea/*
 
 
 # Compiled Lua sources

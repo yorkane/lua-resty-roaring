@@ -17,7 +17,7 @@ local number_list_type = ffi_utils.number_list_type
 local tonumber, tostring, type = tonumber, tostring, type
 
 ---@type resty.roaring.base
-local libc = ffi.load("librestyroaring.so")
+local libc = ffi_utils.load_shared_lib("librestyroaring.so")
 
 local base = require("resty.roaring.base")
 ffi.cdef([[//your definition on here
@@ -151,11 +151,14 @@ function _M:tostring()
 end
 
 ---dispose should be called before manual destroyed
---function _M:dispose()
---	if self.finalizer then
---		self.finalizer(self)
---	end
---end
+function _M:dispose()
+	if self.is_32bit then
+		self.libc.delete_Roaring(self.cdata)
+	else
+		self.libc.delete_Roaring64Map(self.cdata)
+	end
+	self.cdata = nil
+end
 
 ---add_hash
 ---@param uid any @ char*
