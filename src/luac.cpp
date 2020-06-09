@@ -406,4 +406,17 @@ uint32_t r64_xxhash32(const char *str, size_t length, uint64_t seed) {
   // memcpy(dst_4bytes, &number, 4);
   return number;
 }
+
+bool runOptimize(Roaring64Map *self) {
+	return self->runOptimize();
+}
+
+size_t shrinkToFit(Roaring64Map *self) {
+	return self->shrinkToFit();
+}
+
+void clear(Roaring64Map *self) {
+	 self->clear();
+}
+
 }

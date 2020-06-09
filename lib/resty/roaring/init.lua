@@ -21,6 +21,7 @@ local libc = ffi_utils.load_shared_lib("librestyroaring.so")
 
 local base = require("resty.roaring.base")
 ffi.cdef([[//your definition on here
+typedef struct Roaring64Map Roaring64Map;
 typedef struct Roaring Roaring;
 
 ]] .. base.cdef)
@@ -152,11 +153,11 @@ end
 
 ---dispose should be called before manual destroyed
 function _M:dispose()
-	if self.is_32bit then
-		self.libc.delete_Roaring(self.cdata)
-	else
-		self.libc.delete_Roaring64Map(self.cdata)
-	end
+	--if self.is_32bit then
+	--	self.libc.delete_Roaring(self.cdata)
+	--else
+	--	self.libc.delete_Roaring64Map(self.cdata)
+	--end
 	self.cdata = nil
 end
 
