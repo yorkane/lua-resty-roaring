@@ -1,6 +1,6 @@
 INST_PREFIX ?= /usr/local
-INST_LIBDIR ?= /usr/lib/lua/5.1 # ffi.load could not reach /usr/local/lib/lua/5.1
-INST_LUADIR ?= $(INST_PREFIX)/share/lua/5.1
+INST_LIBDIR ?= /usr/local/openresty/site/lualib
+INST_LUADIR ?= /usr/local/openresty/site/lualib
 INSTALL ?= install
 UNAME ?= $(shell uname)
 OR_EXEC ?= $(shell which openresty)

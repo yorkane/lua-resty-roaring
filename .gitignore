@@ -1,8 +1,9 @@
-/src/roaring
-/.idea/*
 .idea/
-.idea/*
 
+t/servroot
+.*
+deps
+.idea/
 
 # Compiled Lua sources
 luac.out
@@ -45,3 +46,5 @@ luac.out
 *.i*86
 *.x86_64
 *.hex
+.idea/workspace.xml
+.idea/workspace.xml

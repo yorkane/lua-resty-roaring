@@ -247,12 +247,14 @@ end
 ---@param n8 number @ int64_t
 ---@param n9 number @ int64_t
 ---@param n10 number @ int64_t
----@return any @ void*
+---@return resty.roaring
 function _M:bitmapOf(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10)
 	if self.is_32bit then
-		return libc.r32_bitmapOf(self.cdata, n1, n2 or 0, n3 or 0, n4 or 0, n5 or 0, n6 or 0, n7 or 0, n8 or 0, n9 or 0, n10 or 0)
+		libc.r32_bitmapOf(self.cdata, n1, n2 or 0, n3 or 0, n4 or 0, n5 or 0, n6 or 0, n7 or 0, n8 or 0, n9 or 0, n10 or 0)
+		return self
 	else
-		return libc.r64_bitmapOf(self.cdata, n1, n2 or 0, n3 or 0, n4 or 0, n5 or 0, n6 or 0, n7 or 0, n8 or 0, n9 or 0, n10 or 0)
+		libc.r64_bitmapOf(self.cdata, n1, n2 or 0, n3 or 0, n4 or 0, n5 or 0, n6 or 0, n7 or 0, n8 or 0, n9 or 0, n10 or 0)
+		return self
 	end
 
 end
@@ -420,16 +422,28 @@ function _M.get_list_from_bytes(bytes, is_64bit, is_raw)
 	end
 end
 
----get_list_from_bytes
----@param bytes string
----@param num number
----@param is_raw boolean
-function _M.bytes_of(bytes, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10)
-	local r = _M.new32(bytes)
-	if r then
-		r:bitmapOf(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10)
-		return r:tostring()
+
+---new
+---@param bytes_or_num_list number[]|string|cdata @ number list, binary string bytes, cdata pointer are accepted
+---@return resty.roaring
+function _M.flip(nstart, nstop)
+	---@type resty.roaring
+	local inst = {
+		is_32bit = true,
+		libc = libc
+	}
+	setmetatable(inst, mt)
+	local tp = type(bytes_or_num_list)
+	if tp == 'table' and bytes_or_num_list[1] then
+		inst.cdata = base.new_Roaring(inst)
+		inst:addMany(bytes_or_num_list)
+	elseif tp == 'cdata' then
+		inst.cdata = bytes_or_num_list
+	else
+		inst.cdata = libc.new_Roaring(bytes_or_num_list)
 	end
+	ffi.gc(inst.cdata, libc.delete_Roaring)
+	return inst
 end
 
 return _M

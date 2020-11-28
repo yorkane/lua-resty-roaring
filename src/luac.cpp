@@ -88,6 +88,20 @@ void r32_add_uint(Roaring *self, uint32_t num) {
   return;
 }
 
+void r32_add_bytes(Roaring *self, const char *bytes) {
+  uint32_t num;
+  memcpy(&num, bytes, 4);
+  self->add(num);
+  return;
+}
+
+void r64_add_bytes(Roaring64Map *self, const char *bytes) {
+  uint64_t num;
+  memcpy(&num, bytes, 8);
+  self->add(num);
+  return;
+}
+
 void *r64_bitmapOf(Roaring64Map *self, int64_t n1, int64_t n2, int64_t n3,
                    int64_t n4, int64_t n5, int64_t n6, int64_t n7, int64_t n8,
                    int64_t n9, int64_t n10) {
@@ -366,7 +380,7 @@ bool r64_removeChecked(Roaring64Map *self, uint64_t x) {
 
 bool r32_removeChecked(Roaring *self, uint32_t x) {
   assert(self != NULL);
-  self->removeChecked(x);
+  return self->removeChecked(x);
 }
 
 // void r64_union(Roaring64Map* self, Roaring64Map* source) {
