@@ -353,10 +353,10 @@ void r32_list(Roaring *self, uint32_t *num_list_buff) {
   self->toUint32Array(num_list_buff);
 }
 
-void r32_list_range(Roaring *self, uint32_t *num_list_buff, size_t offset, size_t limit) {
-  assert(self != NULL);
-  self->rangeUint32Array(num_list_buff, size_t offset, size_t limit);
-}
+// void r32_list_range(Roaring *self, uint32_t *num_list_buff, size_t offset, size_t limit) {
+  // assert(self != NULL);
+  // self->rangeUint32Array(num_list_buff, size_t offset, size_t limit);
+// }
 
 void r64_runOptimize(Roaring64Map *self) {
   assert(self != NULL);
