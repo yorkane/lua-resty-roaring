@@ -24,7 +24,7 @@ MY_CFLAGS := $(CFLAGS) -DBUILDING_SO -c src/luac.cpp
 MY_LDFLAGS := $(LDFLAGS) -fvisibility=hidden
 SRC := $(wildcard src/*.cpp)
 
-CRoaringVersion := 0.2.66
+CRoaringVersion := 0.3.4
 
 .PHONY: default
 default: deps compile
