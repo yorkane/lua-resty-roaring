@@ -24,6 +24,12 @@ void r64_add_map(Roaring64Map *self, Roaring64Map *target);
 void r32_add_map(Roaring *self, Roaring *target);
 void r64_intersect_map(Roaring64Map *self, Roaring64Map *target);
 void r32_intersect_map(Roaring *self, Roaring *target);
+void r64_andnot_map(Roaring64Map *self, Roaring64Map *target);
+void r32_andnot_map(Roaring *self, Roaring *target);
+void r64_or_map(Roaring64Map *self, Roaring64Map *target);
+void r32_or_map(Roaring *self, Roaring *target);
+void r64_xor_map(Roaring64Map *self, Roaring64Map *target);
+void r32_xor_map(Roaring *self, Roaring *target);
 size_t r64_maximum(Roaring64Map *self);
 size_t r32_maximum(Roaring *self);
 size_t r64_minimum(Roaring64Map *self);
@@ -224,6 +230,50 @@ end
 function _M:r32_intersect_map(target)
 	return self.libc.r32_intersect_map(self.cdata, target)
 end
+
+
+---r64_andnot_map
+---@param target any @ Roaring64Map
+---@return any @ void 
+function _M:r64_andnot_map(target)
+	return self.libc.r64_andnot_map(self.cdata, target)
+end
+
+---r32_andnot_map
+---@param target any @ Roaring
+---@return any @ void 
+function _M:r32_andnot_map(target)
+	return self.libc.r32_andnot_map(self.cdata, target)
+end
+
+---r64_or_map
+---@param target any @ Roaring64Map
+---@return any @ void 
+function _M:r64_or_map(target)
+	return self.libc.r64_or_map(self.cdata, target)
+end
+
+---r32_or_map
+---@param target any @ Roaring
+---@return any @ void 
+function _M:r32_or_map(target)
+	return self.libc.r32_or_map(self.cdata, target)
+end
+
+---r64_xor_map
+---@param target any @ Roaring64Map
+---@return any @ void 
+function _M:r64_xor_map(target)
+	return self.libc.r64_xor_map(self.cdata, target)
+end
+
+---r32_xor_map
+---@param target any @ Roaring
+---@return any @ void 
+function _M:r32_xor_map(target)
+	return self.libc.r32_xor_map(self.cdata, target)
+end
+
 
 ---r64_maximum
 ---@return number @ size_t 

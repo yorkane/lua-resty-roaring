@@ -43,6 +43,7 @@ end
 local str_buf_size = 4096
 local str_buf
 local c_buf_type = ffi.typeof("char[?]")
+local uc_buf_type = ffi.typeof("unsigned char[?]")
 local c_size_t_list = ffi.typeof("size_t[?]")
 
 ---get_string_buf create a referable string buffer to inject into C functions
@@ -54,6 +55,17 @@ function _M.get_string_buf(size)
 	end
 	if not str_buf then
 		str_buf = ffi_new(c_buf_type, str_buf_size)
+	end
+	return str_buf
+end
+
+function _M.get_ustring_buf(size)
+
+	if size > str_buf_size then
+		return ffi_new(uc_buf_type, size)
+	end
+	if not str_buf then
+		str_buf = ffi_new(uc_buf_type, str_buf_size)
 	end
 	return str_buf
 end

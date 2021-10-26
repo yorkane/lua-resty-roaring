@@ -146,8 +146,8 @@ function _M:tostring()
 		dst = get_string_buf(len)
 		libc.r64_tostring(self.cdata, dst)
 	end
-	local str = ffi_string(dst, len)
-	dst = nil
+		local str = ffi_string(dst, len)
+		dst = nil
 	return str
 end
 
@@ -355,6 +355,63 @@ function _M:intersect_map(target)
 			return libc.r64_intersect_map(self.cdata, target)
 		end
 		return libc.r64_intersect_map(self.cdata, target.cdata)
+	end
+end
+
+---andnot_map (and 2maps)
+---@param target resty.roaring|string
+function _M:andnot_map(target)
+	local is_byte = type(target) == 'string'
+	if self.is_32bit then
+		if is_byte then
+			target = libc.new_Roaring(target)
+			return libc.r32_andnot_map(self.cdata, target)
+		end
+		return libc.r32_andnot_map(self.cdata, target.cdata)
+	else
+		if is_byte then
+			target = libc.new_Roaring64Map(target)
+			return libc.r64_andnot_map(self.cdata, target)
+		end
+		return libc.r64_andnot_map(self.cdata, target.cdata)
+	end
+end
+
+---or_map (and 2maps)
+---@param target resty.roaring|string
+function _M:or_map(target)
+	local is_byte = type(target) == 'string'
+	if self.is_32bit then
+		if is_byte then
+			target = libc.new_Roaring(target)
+			return libc.r32_or_map(self.cdata, target)
+		end
+		return libc.r32_or_map(self.cdata, target.cdata)
+	else
+		if is_byte then
+			target = libc.new_Roaring64Map(target)
+			return libc.r64_or_map(self.cdata, target)
+		end
+		return libc.r64_or_map(self.cdata, target.cdata)
+	end
+end
+
+---xor_map (and 2maps)
+---@param target resty.roaring|string
+function _M:xor_map(target)
+	local is_byte = type(target) == 'string'
+	if self.is_32bit then
+		if is_byte then
+			target = libc.new_Roaring(target)
+			return libc.r32_xor_map(self.cdata, target)
+		end
+		return libc.r32_xor_map(self.cdata, target.cdata)
+	else
+		if is_byte then
+			target = libc.new_Roaring64Map(target)
+			return libc.r64_xor_map(self.cdata, target)
+		end
+		return libc.r64_xor_map(self.cdata, target.cdata)
 	end
 end
 

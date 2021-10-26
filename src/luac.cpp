@@ -8,6 +8,7 @@ orcli ffi /code/CRoaring/luac.cpp Roaring64Map luac.so
 #include "roaring/roaring.c"
 #include "roaring/roaring.hh"
 #include <xxhash.h>
+using namespace roaring;
 
 /**
 g++ -I include/ -I cpp/ -I src/ -O3 -g -Wall -Wextra -Wno-return-local-addr
@@ -262,6 +263,30 @@ void r32_intersect_map(Roaring *self, Roaring *target) {
   roaring_bitmap_and_inplace(&self->roaring, &target->roaring);
   // *self = *self & *target;
   // delete self;
+}
+
+void r64_andnot_map(Roaring64Map *self, Roaring64Map *target) {
+  *self = *self - *target;
+}
+
+void r32_andnot_map(Roaring *self, Roaring *target) {
+  roaring_bitmap_andnot_inplace(&self->roaring, &target->roaring);
+}
+
+void r64_or_map(Roaring64Map *self, Roaring64Map *target) {
+  *self = *self | *target;
+}
+
+void r32_or_map(Roaring *self, Roaring *target) {
+  roaring_bitmap_or_inplace(&self->roaring, &target->roaring);
+}
+
+void r64_xor_map(Roaring64Map *self, Roaring64Map *target) {
+  *self = *self ^ *target;
+}
+
+void r32_xor_map(Roaring *self, Roaring *target) {
+  roaring_bitmap_xor_inplace(&self->roaring, &target->roaring);
 }
 
 size_t r64_maximum(Roaring64Map *self) { return self->maximum(); }
