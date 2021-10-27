@@ -4,8 +4,8 @@ orcli ffi /code/CRoaring/luac.cpp Roaring64Map luac.so
 **/
 
 #include <cstring>
+#include <cassert>
 #include <iostream>
-#include "roaring/roaring.c"
 #include "roaring/roaring.hh"
 #include <xxhash.h>
 using namespace roaring;
@@ -75,7 +75,8 @@ void delete_Roaring64Map(Roaring64Map *self) {
 
 void delete_Roaring(Roaring *self) {
   // r64_bitmap_free(self);
-  ra_clear(&self->roaring.high_low_container);
+//  ra_clear(&self->roaring.high_low_container);
+//  free(self->roaring);
   delete self;
 }
 

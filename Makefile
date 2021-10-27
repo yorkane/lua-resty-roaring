@@ -11,7 +11,7 @@ LUAJIT_DIR ?= $(shell ${OR_EXEC} -V 2>&1 | grep prefix | grep -Eo 'prefix=(.*)/n
 CFLAGS := -O3 -g -Wall -Wextra -Wno-return-local-addr -fpic -std=c++11
 
 C_SO_NAME := librestyroaring.so
-LDFLAGS := -shared -L/usr/lib64/ -L/usr/lib/ -lxxhash
+LDFLAGS := -shared -L/usr/lib64/ -L/usr/lib/ -lxxhash -lroaring
 
 # on Mac OS X, one should set instead:
 # for Mac OS X environment, use one of options
