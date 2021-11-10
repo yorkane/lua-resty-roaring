@@ -488,7 +488,11 @@ end
 ---runOptimize
 ---@return boolean @ bool 
 function _M:runOptimize()
-	return self.libc.runOptimize(self.cdata)
+	if self.is_32bit then
+		return self.libc.r32_runOptimize(self.cdata)
+	else
+		return self.libc.r64_runOptimize(self.cdata)
+	end
 end
 
 ---shrinkToFit
