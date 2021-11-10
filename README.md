@@ -16,15 +16,17 @@ local test cases passed
 # export INST_LUADIR=/usr/local/openresty/site/lualib
 git clone https://github.com/yorkane/lua-resty-roaring.git
 cd lua-resty-roaring
+bash deps.sh
 make && make install
 ```
 
 ## Luarocks
+>Not support yet
 ```bash
 #uncomment following comment incase you need customize installation location
 # export INST_LIBDIR=/usr/local/lib/lua/5.1 
 # export INST_LUADIR=/usr/local/share/lua/5.1
-luarocks install lua-resty-roaring
+#luarocks install lua-resty-roaring
 ```
 
 # Usages:
