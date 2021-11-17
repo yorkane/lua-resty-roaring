@@ -11,10 +11,8 @@ orcli ffi /code/CRoaring/luac.cpp Roaring64Map luac.so
 using namespace roaring;
 
 /**
-g++ -I include/ -I cpp/ -I src/ -O3 -g -Wall -Wextra -Wno-return-local-addr
--fpic -std=c++11 -Wl,rpath=/usr/local/openresty/nginx/lib -c luac.cpp
-g++ luac.o xxhash.o -shared -o luac.so && mv luac.so
-/usr/local/openresty/site/lualib/ -f
+g++ -I include/ -I cpp/ -I src/ -O3 -g -Wall -Wextra -Wno-return-local-addr -fpic -std=c++11 -Wl,rpath=/usr/local/openresty/nginx/lib -c luac.cpp
+g++ luac.o xxhash.o -shared -o luac.so && mv luac.so /usr/local/openresty/site/lualib/ -f
 **/
 /* orcli ffi /code/CRoaring/luac.cpp Roaring64Map luac.so
  * /usr/local/openresty/nginx/
@@ -342,6 +340,7 @@ uint32_t r32_byte_size(Roaring *self) { return self->getSizeInBytes(true); }
 
 void r64_tostring(Roaring64Map *self, char *dst) {
   assert(self != NULL);
+  self->runOptimize();
   self->write(dst, true);
 }
 
@@ -356,6 +355,7 @@ void r32_tostring(Roaring *self, char *dst) {
   // std::cout << "  size:  " << p.getSizeInBytes()
   //           << "deserialized: " << p.cardinality() << std::endl;
   assert(self != NULL);
+  self->runOptimize();
   self->write(dst, true);
 }
 
