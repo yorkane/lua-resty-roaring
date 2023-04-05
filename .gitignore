@@ -1,12 +1,9 @@
-croaring/*.c
-croaring/*.h
-croaring/*.hh
+/CRoaring/
 # Prerequisites
 *.d
 
 .idea/
 
-t/servroot
 .*
 deps
 .idea/

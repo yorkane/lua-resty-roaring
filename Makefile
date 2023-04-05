@@ -34,12 +34,10 @@ default: deps compile
 ### Downloading xxhash github
 .PHONY: deps
 deps:
-	if [ -d "src/roaring" ]; then \
-        echo "roaring exists";\
-    else\
-    	curl https://github.com/lemire/CRoaringUnityBuild/archive/v${CRoaringVersion}.tar.gz -Lk | tar -xvz -C src/;\
-		mv src/CRoar* src/roaring;\
-    fi
+    git clone https://github.com/RoaringBitmap/CRoaring.git
+	cd CRoaring && ./amalgamation.sh
+	cd CRoaring  && cc -O3 -std=c11 -shared -o libroaring.so -fPIC roaring.c && mv libroaring.so /usr/lib/
+	ln -sf /usr/lib/libroaring.so /usr/lib/libroaring.so.2
 
 
 ### test:         Run test suite. Use test=... for specific tests
